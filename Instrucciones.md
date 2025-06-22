@@ -5,5 +5,5 @@
         2.- source env/bin/activate (Linux o MacOS) //activar entorno
             env\Scripts\activate.bat (Windows) // activar entorno 
 
-## instalar dependencias
-    pip install PySide6 vtk pyserial pandas
+## 🔧 2.- Instalar dependencias
+        pip install PySide6 vtk pyserial pandas
