@@ -1,0 +1,1 @@
+# esta componente se encarga de cargar el modelo 3D 

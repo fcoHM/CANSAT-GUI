@@ -6,4 +6,4 @@
             env\Scripts\activate.bat (Windows) // activar entorno 
 
 ## 🔧 2.- Instalar dependencias
-        pip install PySide6 vtk pyserial pandas
+        pip install PySide6 vtk pyserial pandas matplotlib numpy
