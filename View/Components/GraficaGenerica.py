@@ -46,7 +46,7 @@ class GraficaGenerica(QWidget):
         self.info = QLabel("⏳ Iniciando monitoreo...")
         layout.addWidget(self.info)
 
-        self.timer = QTimer()
+        #self.timer = QTimer()
         # self.timer.timeout.connect(self.simular_dato)  ## aqui posiblemnete vamos a usar el metodo de actualizar la grafica ya que el valor lo vamos a recibir  por otro lado 
         # self.timer.start(1000)  # 1000 ms = 1 segundo
 
@@ -91,3 +91,13 @@ class GraficaGenerica(QWidget):
         self.figura.tight_layout()
         self.canvas.draw() # actualiza/repintado de la interface 
 
+
+
+# metodos get y set para las listas
+    #recuperamos la lista con los tiempos realizados
+    def getTiempos(self): 
+        return self.tiempos 
+    
+    # recuperamos la lista con los datos que entraron
+    def getDatos(self):
+        return self.datos

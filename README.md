@@ -1,6 +1,6 @@
 # 🚀 Interfaz Gráfica para CANSAT
 
-Este proyecto es una interfaz gráfica desarrollada con **PySide6**, diseñada para visualizar en tiempo real los datos transmitidos por un satélite tipo **CANSAT**. 
+Este proyecto es una interfaz gráfica desarrollada con **PySide6**, diseñada para visualizar en tiempo real los datos transmitidos por un satélite tipo **CANSAT**.
 
 Se enfoca en representar parámetros como:
 
