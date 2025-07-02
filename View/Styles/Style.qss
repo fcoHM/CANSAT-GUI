@@ -1,0 +1,11 @@
+#infoLabel{ /*estilo de la etiqueta de la grafica*/
+    font-size: 15px;                                             
+    color: #FFFFFF;                                     
+    background-color: #141924;                                   
+    border-radius: 5px;                                          
+    padding: 5px;  
+}
+
+* {/*funte para toda la interface */
+    font-family: 'Montserrat', sans-serif;
+}
