@@ -6,7 +6,7 @@ from matplotlib.figure import Figure
 class GraficaGenerica(QWidget):
     def __init__(self, nombre_grafica, nomX, nomY, notacion, color):
         super().__init__()
-        self.resize(500, 300)  # Tamaño inicial de la ventana QT
+        self.resize(450, 270)  # Tamaño inicial de la ventana QT
         
         # Contadores para datos y tiempo
         self.tiempos_ventana = []      # Eje X: tiempo en segundos temporales
@@ -100,6 +100,7 @@ class GraficaGenerica(QWidget):
             x = self.tiempos_ventana[0]
             self.ejes_grafica.set_xlim(x - 1, x + 1)
 
+        self.figura.tight_layout()
         # 5. Redibujar solo el canvas
         self.canvas.draw()
 
