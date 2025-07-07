@@ -1,10 +1,76 @@
-#infoLabel{ /*estilo de la etiqueta de la grafica*/
-    font-size: 15px;                                             
+#EstiInfo{ /*estilo de la etiqueta de la grafica*/
+    font-size: 20px;                                             
     color: #FFFFFF;                                     
     background-color: #141924;                                   
     border-radius: 5px;                                          
     padding: 5px;  
 }
+
+#seccion{ /* esto es para editar etiquetas de tipo seccion */
+    font-size: 30px;
+    color: #FFFFFF;
+    background-color: #141924;                                   
+    border-radius: 5px;                                          
+    padding: 5px;
+    font-weight: bold;
+    qproperty-alignment: 'AlignCenter';
+}
+
+#etiquetaControl {
+    font-size: 16px;
+    background-color: #141924;
+    color: #FFFFFF;
+    padding: 3px;
+    border-radius: 3px;
+    padding: 6px;
+    font-weight: bold;
+}
+
+#campoText {
+    background-color: #2b2b2b;
+    color: #FFFFFF;
+    border: 1px solid #555;
+    border-radius: 6px;
+    padding: 6px;
+    font-size: 14px;
+}
+
+#campoText:focus {
+    border: 1px solid #00bcd4;
+    background-color: #2b2b2b;
+}
+
+#desplegable{
+    background-color: #2b2b2b;
+    border: 1px solid #555;
+    border-radius: 6px;
+    padding: 3px;
+    font-size: 14px;
+}
+
+#desplegable:focus {
+    border: 1px solid #00bcd4;
+    background-color: #333;
+}
+
+
+#boton {
+    background-color: #00bcd4;
+    border: 1px solid #555;
+    border-radius: 6px;
+    padding: 3px;
+    font-size: 14px;
+    min-width: 100px;
+    max-width: 200px;
+}
+
+#boton:hover {
+    border: 1px solid #FFFFFF;
+    color: #FFFFFF;
+    background-color: #2b2b2b;
+}
+
+
 
 * {/*funte para toda la interface */
     font-family: 'Montserrat', sans-serif;

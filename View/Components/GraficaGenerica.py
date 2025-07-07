@@ -6,7 +6,7 @@ from matplotlib.figure import Figure
 class GraficaGenerica(QWidget):
     def __init__(self, nombre_grafica, nomX, nomY, notacion, color):
         super().__init__()
-        self.resize(450, 270)  # Tamaño inicial de la ventana QT
+        self.resize(420, 260)  # Tamaño inicial de la ventana QT
         
         # Contadores para datos y tiempo
         self.tiempos_ventana = []      # Eje X: tiempo en segundos temporales
@@ -52,7 +52,7 @@ class GraficaGenerica(QWidget):
 
         # Etiqueta informativa para mostrar el último dato recibido
         self.info = QLabel("⏳ Iniciando monitoreo...")
-        self.info.setObjectName("infoLabel") # Cambio de nombre al objeto para edicion en QSS
+        self.info.setObjectName("EstiInfo") # Cambio de nombre al objeto para edicion en QSS
         layout.addWidget(self.info)
 
     # Método para agregar un dato a la gráfica
