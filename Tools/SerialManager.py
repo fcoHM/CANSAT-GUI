@@ -2,15 +2,18 @@ import serial
 from serial.tools.list_ports import comports
 from threading import Thread, Event
 import time
+from PySide6.QtCore import QObject, Signal
 
 # esta clase se encargar del manejo del puerto serial
-class SerialManager:
+class SerialManager(QObject):
+    linea_recibida = Signal(str)
+
     def __init__(self):
+        super().__init__()
         self.serialConexion = None  # conexion serial activa
         self.scanning_thread = None  # hilo que escanea en segundo plano
         self.scanning_event = Event()  # bandera para detener el hilo
         self.baudios = 1200  # veolocidad de trasmicion por defecto
-        self.callback = None  # funcion que maneja los datos recividos
 
 # metodos funcionales
 
@@ -54,7 +57,7 @@ class SerialManager:
         return False
 
     # iniciar escaneo de un puerto serial
-    def iniciar_escaneo(self, callback=None):
+    def iniciar_escaneo(self):
         # verifica que no haya una conexion
         if not self.serialConexion or not self.serialConexion.is_open:
             return False
@@ -65,7 +68,6 @@ class SerialManager:
             return False
 
         # Configura el callback y limpia evento de parada
-        self.callback = callback
         self.scanning_event.clear()
 
         # Crea e inicia el hilo de escaneo
@@ -100,9 +102,9 @@ class SerialManager:
                     while '\n' in buffer:
                         line, buffer = buffer.split('\n', 1)  # separa la primera línea
                         line = line.strip()  # elimina espacios y saltos de línea
-                        if line and self.callback:
-                            # llama al callback con la línea completa
-                            self.callback(line)
+                        if line:
+                            # Emite la señal con la línea completa
+                            self.linea_recibida.emit(line)
 
                 time.sleep(0.01)  # pequeña pausa para reducir carga de CPU
 

@@ -1,0 +1,22 @@
+<mxfile host="65bd71144e">
+    <diagram id="bBu51jvi2sBwt8tamnlW" name="Page-1">
+        <mxGraphModel dx="543" dy="569" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="2" value="GraficaGenerica" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+                    <mxGeometry x="20" y="310" width="400" height="300" as="geometry"/>
+                </mxCell>
+                <mxCell id="3" value="&lt;div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp;- tiempos_ventana:list&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp;- datos_ventana:list&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp;- tiempos_historial:list&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp;- datos_historial:list&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp;- contador_segundos:int&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp;- nombre_grafica:str&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp;- nombre_eje_x:str&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp;- nombre_eje_y:str&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp;- notacion:str&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp;- color_linea:str&lt;/div&gt;&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="2" vertex="1">
+                    <mxGeometry y="26" width="400" height="154" as="geometry"/>
+                </mxCell>
+                <mxCell id="4" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" parent="2" vertex="1">
+                    <mxGeometry y="180" width="400" height="8" as="geometry"/>
+                </mxCell>
+                <mxCell id="5" value="&lt;div&gt;&lt;font color=&quot;#000000&quot;&gt;&amp;nbsp; &amp;nbsp;- __init__(self, nombre_grafica, nomX, nomY, notacion, color):None&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font color=&quot;#000000&quot;&gt;&amp;nbsp; &amp;nbsp;- agregarDato(self, dato):None&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font color=&quot;#000000&quot;&gt;&amp;nbsp; &amp;nbsp;- actualizarGrafica(self):None&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font color=&quot;#000000&quot;&gt;&amp;nbsp; &amp;nbsp;- getTiempos(self):list&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font color=&quot;#000000&quot;&gt;&amp;nbsp; &amp;nbsp;- getDatos(self):list&lt;/font&gt;&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="2" vertex="1">
+                    <mxGeometry y="188" width="400" height="112" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

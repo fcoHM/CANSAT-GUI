@@ -1,30 +1,36 @@
+import sys
+import os
+import random
 from PySide6.QtWidgets import QApplication
 from PySide6.QtCore import QTimer
-import sys
-from View.Components.GraficaGenerica import GraficaGenerica
-import random
+from View.MonitoreoTiempoReal import MonitoreoTiempoReal
+from Tools.Paths import rutaAbsoluta
+from PySide6.QtGui import QIcon
+from Controllers.CMonitoreoTiempoReal import CMonitoreoTiempoReal
 
 def main():
     app = QApplication(sys.argv)
+    app.setStyle("Fusion")
+
+    # Obtener la ruta del script
+    ruta_qss = rutaAbsoluta("View/Styles/Style.qss")
+
+
+    icono_path = rutaAbsoluta("Media/icono.ico")
+
+    # Aplicar estilo
+    if os.path.exists(ruta_qss):
+        with open(ruta_qss, "r") as f:
+            app.setStyleSheet(f.read())
+
+    # Crear ventana y controlador
+    controlador = CMonitoreoTiempoReal()
+    ventana = MonitoreoTiempoReal(controlador)
+    ventana.setWindowIcon(QIcon(icono_path))
+    ventana.setWindowTitle("CANSAT - Monitoreo Tiempo Real")
+    ventana.showMaximized()
+
     
-    # Create an instance of the GraficaGenerica class
-    grafica = GraficaGenerica("Demo Graph", "Time (s)", "Value", "red")
-    grafica.show()
-
-    datos_restantes = 20
-
-    def agregar_dato():
-        nonlocal datos_restantes
-        
-        dato = random.uniform(0, 100)  # Generate a random value between 0 and 100
-        grafica.agregarDato(dato)
-        datos_restantes -= 1
-       
-        
-
-    timer = QTimer()
-    timer.timeout.connect(agregar_dato)
-    timer.start(1000)  # 1000 ms = 1 segundo
 
     sys.exit(app.exec())
 

@@ -6,7 +6,7 @@
     padding: 5px;  
 }
 
-#seccion{ /* esto es para editar etiquetas de tipo seccion */
+#seccion{ /* etiquetas de tipo seccion */
     font-size: 30px;
     color: #FFFFFF;
     background-color: #141924;                                   
@@ -16,7 +16,7 @@
     qproperty-alignment: 'AlignCenter';
 }
 
-#etiquetaControl {
+#etiquetaControl { /*etiquetas de informacion normal */
     font-size: 16px;
     background-color: #141924;
     color: #FFFFFF;
@@ -26,7 +26,7 @@
     font-weight: bold;
 }
 
-#campoText {
+#campoText { /*campos de texto */
     background-color: #2b2b2b;
     color: #FFFFFF;
     border: 1px solid #555;
@@ -40,22 +40,33 @@
     background-color: #2b2b2b;
 }
 
-#desplegable{
+#desplegable{ /*listas desplegables */
     background-color: #2b2b2b;
     border: 1px solid #555;
-    color: #FFFFFF;
+    color: #ffffff;
     border-radius: 6px;
-    padding: 3px;
+    padding: 4px 6px;
     font-size: 14px;
+    combobox-popup: 0; 
 }
 
 #desplegable:focus {
     border: 1px solid #00bcd4;
-    background-color: #333;
+    background-color: #333333;
 }
 
+#desplegable QAbstractItemView {
+    background-color: #1e1e1e;
+    color: #ffffff;
+    selection-background-color: #3d8ec9;
+    selection-color: #578d9b;
+    border: 1px solid #555;
+    outline: none;
+    padding: 4px;
+    border-radius: 6px;
+}
 
-#boton {
+#boton { /*botones de opciones */
     background-color: #00bcd4;
     border: 1px solid #555;
     border-radius: 6px;
@@ -71,7 +82,7 @@
     background-color: #2b2b2b;
 }
 
-#botonControl{
+#botonControl{ /* botones funcionales */
     background-color: #00bcd4;
     border: 1px solid #555;
     border-radius: 6px;
@@ -86,6 +97,13 @@
     border: 1px solid #FFFFFF;
     color: #FFFFFF;
     background-color: #2b2b2b;
+}
+
+QMessageBox { /* mensajes flotantes */
+    background-color: #2b2b2b;
+    color: #ffffff;
+    font-size: 14px;
+    border-radius: 10px;
 }
 
 * {/*funte para toda la interface */

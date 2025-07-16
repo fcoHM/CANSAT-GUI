@@ -2,17 +2,20 @@ from PySide6.QtWidgets import ( QWidget, QHBoxLayout, QVBoxLayout, QGridLayout, 
                                QComboBox, QLineEdit)
 from View.Components.Visual3D import Visual3D
 from View.Components.GraficaGenerica import GraficaGenerica
+from PySide6.QtWidgets import QMessageBox  
+
+from Tools.Paths import rutaAbsoluta
 
 #clase para la ventana de monitoreo en timpo real
-class VentanaMTR(QWidget):
-    def __init__(self, controlador, rutaStl):
+class MonitoreoTiempoReal(QWidget):
+    def __init__(self, controlador):
         super().__init__() # se manda a llamar el constructor la clase Qwidget 
         #ajustes de la ventana
         ContenidoPrincipal = QHBoxLayout() # contenedor horizontal que lleva todo el contenido
         ladoIzq = QVBoxLayout() # contenedor vertical para el modelos 3d 
         ladoDer = QVBoxLayout() # contenedor en tabla para las graficas que se van a colocar
 
-        self.ruta = rutaStl
+        self.rutaModel3DCansat = rutaAbsoluta("Media/Model3D/CANSAT.stl") # obtener ruta absoluta del modelo
 
 
         # controlador de la ventana
@@ -22,7 +25,7 @@ class VentanaMTR(QWidget):
         #----------------------------------componentes lado IZQ------------------------------------
         etVisual = QLabel("Monitoreo 3D")
         etVisual.setObjectName("seccion")
-        self.visual = Visual3D(self.ruta) # modelo 3D
+        self.visual = Visual3D(self.rutaModel3DCansat) # modelo 3D
         ladoIzq.addWidget(etVisual) # se agrega la etiqueta de seccion
         ladoIzq.addWidget(self.visual) # se agrego al lado derecho
 
@@ -41,7 +44,21 @@ class VentanaMTR(QWidget):
         gridControles.addWidget(etMision, 1, 0)
         self.nameMision.setPlaceholderText("Nombre de lanzamiento...")
         self.nameMision.setObjectName("campoText")
-        gridControles.addWidget(self.nameMision, 1, 1, 1, 4)  # 1 fila, 3 columnas
+        gridControles.addWidget(self.nameMision, 1, 1, 1, 2)  # 1 fila, 3 columnas
+
+        # boton para conectar/establecer una conexion con un puerto serial
+        self.conectarBut = QPushButton("Conectar")
+        self.conectarBut.setObjectName("boton")
+        self.conectarBut.clicked.connect(self.controlador.conectar_puerto) # establecer comunicasion a un puerto serial
+        gridControles.addWidget(self.conectarBut, 1, 3)
+
+        # boton para desconectar un puerto serial
+        self.desconectarBut = QPushButton("Desconectar")
+        self.desconectarBut.setObjectName("boton")
+        self.desconectarBut.clicked.connect(self.controlador.desconectar_puerto)
+        gridControles.addWidget(self.desconectarBut, 1, 4)
+
+
 
         # desplegable puesto serial
         etPuertoSerial = QLabel("Puerto serial:")
@@ -49,6 +66,7 @@ class VentanaMTR(QWidget):
         gridControles.addWidget(etPuertoSerial, 2, 0)
         self.puertosSerial = QComboBox()
         self.puertosSerial.setObjectName("desplegable")
+        self.puertosSerial.addItems(self.controlador.listar_puertos()) # le damos los valores segun el controlador
         gridControles.addWidget(self.puertosSerial, 2, 1)
         
         # seleccionador de velocidad
@@ -63,8 +81,10 @@ class VentanaMTR(QWidget):
         # boton para actualizar los puertos
         self.actualizarBut = QPushButton("Actualizar")
         self.actualizarBut.setObjectName("boton")
+        self.actualizarBut.clicked.connect(self.controlador.actualizar_puertos) #actualiza los puertos que hay
         gridControles.addWidget(self.actualizarBut, 2, 4)
 
+        
         # Segundo grid: gráficas
         gridGrafica = QGridLayout()
         self.temperatura = GraficaGenerica("Temperatura", "Tiempo (s)","Temperatura (°C)", "°C", "#FF5733")
@@ -85,10 +105,12 @@ class VentanaMTR(QWidget):
         # Layout para botones
         botonesLayout = QHBoxLayout()
         self.iniciarBut = QPushButton("Iniciar")
-        self.iniciarBut.setObjectName("boton")
+        self.iniciarBut.clicked.connect(self.controlador.iniciar_monitoreo)
+        self.iniciarBut.setObjectName("botonControl")
 
         self.detenerBut = QPushButton("Detener")
-        self.detenerBut.setObjectName("boton")
+        self.detenerBut.clicked.connect(self.controlador.detener_monitoreo)
+        self.detenerBut.setObjectName("botonControl")
 
         botonesLayout.addStretch()
         botonesLayout.addWidget(self.iniciarBut)
@@ -102,7 +124,26 @@ class VentanaMTR(QWidget):
         #agregar las disposiciones a la ventana principal del objeto
         ContenidoPrincipal.addLayout(ladoIzq) # agregar el lado izq 
         ContenidoPrincipal.addLayout(ladoDer) # agregar el lado der (ahora vertical con grids)
-        ContenidoPrincipal.setStretch(0, 2)  # ladoIzq (30%)
-        ContenidoPrincipal.setStretch(1, 8)  # ladoDer (70%)
+        ContenidoPrincipal.setStretch(0, 2)  # ladoIzq (20%)
+        ContenidoPrincipal.setStretch(1, 8)  # ladoDer (80%)
         self.setLayout(ContenidoPrincipal) # definir lo que tiene el componente principal
 
+    # obtener el puerto seleccionado 
+    def obtener_puerto(self):
+        return self.puertosSerial.currentText()
+    
+    # obtener la velocidad 
+    def obtener_velocidad(self):
+        return self.velocidad.currentText()
+    
+    # mostrar mensaje en pantalla
+    def mostrar_mensaje(self, titulo, mensaje, tipo="info"):
+        """Displays a pop-up message box."""
+        if tipo == "info":
+            QMessageBox.information(self, titulo, mensaje)
+        elif tipo == "warning":
+            QMessageBox.warning(self, titulo, mensaje)
+        elif tipo == "critical":
+            QMessageBox.critical(self, titulo, mensaje)
+        else:
+            QMessageBox.information(self, titulo, mensaje)
