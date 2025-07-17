@@ -42,7 +42,7 @@ class SerialManager(QObject):
             self.serialConexion = serial.Serial(
                 port=puerto,  # puerto seleccionado
                 baudrate=self.baudios,  # velocidad
-                timeout=1  # Timeout de lectura en segundos
+                timeout=1 # Timeout de lectura en segundos
             )
             return True  # si se establecio
         except serial.SerialException:

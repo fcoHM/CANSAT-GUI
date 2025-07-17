@@ -50,16 +50,16 @@ class CMonitoreoTiempoReal:
             # Asegurarse de que hay suficientes datos antes de acceder a ellos
             if len(datos) >= 3:
                 # Añadir una pequeña variación aleatoria para simular movimiento
-                rotX = datos[0] + random.uniform(-2, 2)
-                rotY = datos[1] + random.uniform(-2, 2)
-                rotZ = datos[2] + random.uniform(-2, 2)
+                rotX = int(datos[0])
+                rotY = int(datos[1])
+                rotZ = int(datos[2])
 
                 # datos[0], datos[1], datos[2] para la orientación
                 self.vista.visual.actualizarOrientacion(rotX, rotY, rotZ)
                 
-                # datos[3] para la temperatura (si existen)
-                # if len(datos) > 3:
-                #     self.vista.temperatura.agregarDato(datos[3])
+                temperatura = datos[3] #para la temperatura (si existen)
+                if len(datos) > 3:
+                     self.vista.temperatura.agregarDato(temperatura)
             else:
                 print(f"Advertencia: Se recibieron datos incompletos: {linea}")
 
@@ -77,3 +77,5 @@ class CMonitoreoTiempoReal:
             
         else:
             self.vista.mostrar_mensaje("Error", "No se  detuvo el escaneo del puerto", "warning")
+
+    

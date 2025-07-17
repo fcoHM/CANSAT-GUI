@@ -15,7 +15,7 @@ class MonitoreoTiempoReal(QWidget):
         ladoIzq = QVBoxLayout() # contenedor vertical para el modelos 3d 
         ladoDer = QVBoxLayout() # contenedor en tabla para las graficas que se van a colocar
 
-        self.rutaModel3DCansat = rutaAbsoluta("Media/Model3D/CANSAT.stl") # obtener ruta absoluta del modelo
+        self.rutaModel3DCansat = rutaAbsoluta("Media/Model3D/COHETE.stl") # obtener ruta absoluta del modelo
 
 
         # controlador de la ventana
@@ -136,14 +136,20 @@ class MonitoreoTiempoReal(QWidget):
     def obtener_velocidad(self):
         return self.velocidad.currentText()
     
+    def obtener_nombre(self):
+        return self.nameMision.text() # se retorna un texto que sera el nombre del vuelo
+    
     # mostrar mensaje en pantalla
     def mostrar_mensaje(self, titulo, mensaje, tipo="info"):
-        """Displays a pop-up message box."""
-        if tipo == "info":
+        if tipo == "info": # informacion normal
             QMessageBox.information(self, titulo, mensaje)
-        elif tipo == "warning":
+        elif tipo == "warning": # informacion de advertencia
             QMessageBox.warning(self, titulo, mensaje)
-        elif tipo == "critical":
+        elif tipo == "critical": # mensaje critico
             QMessageBox.critical(self, titulo, mensaje)
-        else:
+        else: # mensaje default 
             QMessageBox.information(self, titulo, mensaje)
+
+    # escoger que se va a modelar
+    def definirModelo3D(self):
+        pass

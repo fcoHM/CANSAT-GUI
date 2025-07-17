@@ -1,6 +1,5 @@
 import sys
 import os
-import random
 from PySide6.QtWidgets import QApplication
 from PySide6.QtCore import QTimer
 from View.MonitoreoTiempoReal import MonitoreoTiempoReal
@@ -23,14 +22,12 @@ def main():
         with open(ruta_qss, "r") as f:
             app.setStyleSheet(f.read())
 
-    # Crear ventana y controlador
+    # Crear ventana y controlador: monitoreo en tiempo real
     controlador = CMonitoreoTiempoReal()
     ventana = MonitoreoTiempoReal(controlador)
     ventana.setWindowIcon(QIcon(icono_path))
     ventana.setWindowTitle("CANSAT - Monitoreo Tiempo Real")
     ventana.showMaximized()
-
-    
 
     sys.exit(app.exec())
 
