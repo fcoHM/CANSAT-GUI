@@ -26,7 +26,7 @@ class Visual3D(QWidget):
         
         # Carga el modelo STL y ajusta la vista
         self.cargarSTL(self.rutaSTL)
-        self.setZoomFijo(1100)
+        self.setZoomFijo(1300)
         self.setLayout(self.layout)
 
     def iniciarVTK(self):#inicializa el widget VTK y el renderer
@@ -98,5 +98,10 @@ class Visual3D(QWidget):
 
     def getZ_hist(self):
         return self.z_hist
+
+    def cambiarModelo3D(self, nueva_ruta_stl):
+        if self.rutaSTL != nueva_ruta_stl and nueva_ruta_stl:
+            self.rutaSTL = nueva_ruta_stl
+            self.cargarSTL(self.rutaSTL)
 
     

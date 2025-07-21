@@ -15,9 +15,6 @@ class MonitoreoTiempoReal(QWidget):
         ladoIzq = QVBoxLayout() # contenedor vertical para el modelos 3d 
         ladoDer = QVBoxLayout() # contenedor en tabla para las graficas que se van a colocar
 
-        self.rutaModel3DCansat = rutaAbsoluta("Media/Model3D/COHETE.stl") # obtener ruta absoluta del modelo
-
-
         # controlador de la ventana
         self.controlador = controlador # se recive la intancia del controlador
         self.controlador.vista = self # se le pasa la referencia de esta misma ventana
@@ -25,64 +22,76 @@ class MonitoreoTiempoReal(QWidget):
         #----------------------------------componentes lado IZQ------------------------------------
         etVisual = QLabel("Monitoreo 3D")
         etVisual.setObjectName("seccion")
-        self.visual = Visual3D(self.rutaModel3DCansat) # modelo 3D
+        self.visual = Visual3D(rutaAbsoluta("Media/Model3D/CANSAT.stl")) # modelo 3D
         ladoIzq.addWidget(etVisual) # se agrega la etiqueta de seccion
         ladoIzq.addWidget(self.visual) # se agrego al lado derecho
 
 
         #----------------------------------componentes lado DER------------------------------------
-        # Primer grid: encabezado, campos y controles de puerto
-        gridControles = QGridLayout()
+        # Etiqueta de la sección de datos
         etGraficas = QLabel("Monitoreo de datos")
         etGraficas.setObjectName("seccion")
-        gridControles.addWidget(etGraficas, 0, 0, 1, 5)
+        ladoDer.addWidget(etGraficas)
 
-        # espacio para darle nombre al lanzamiento
+        # Primer grid: campos y controles de puerto
+        gridControles = QGridLayout()
+        
+        # Configurar estiramiento de las columnas para que sean proporcionales
+        gridControles.setColumnStretch(0, 1)  # Columna de etiquetas
+        gridControles.setColumnStretch(1, 3)  # Columna para QLineEdit y QComboBox
+        gridControles.setColumnStretch(2, 2)  # Columna para QComboBox y Velocidad
+        gridControles.setColumnStretch(3, 2)  # Columna para Botones
+        gridControles.setColumnStretch(4, 2)  # Columna para Botones
+
+        # --- Fila 1 ---
         etMision = QLabel("Mision:")
         etMision.setObjectName("etiquetaControl")
+        gridControles.addWidget(etMision, 0, 0)
+        
         self.nameMision = QLineEdit()
-        gridControles.addWidget(etMision, 1, 0)
         self.nameMision.setPlaceholderText("Nombre de lanzamiento...")
         self.nameMision.setObjectName("campoText")
-        gridControles.addWidget(self.nameMision, 1, 1, 1, 2)  # 1 fila, 3 columnas
+        gridControles.addWidget(self.nameMision, 0, 1)
 
-        # boton para conectar/establecer una conexion con un puerto serial
+        self.tipoMision = QComboBox()
+        self.tipoMision.setObjectName("desplegable")
+        self.tipoMision.addItems(["CANSAT", "AVIONICA"])
+        self.tipoMision.currentIndexChanged.connect(self.cambiarModelo3D)
+        gridControles.addWidget(self.tipoMision, 0, 2)
+
         self.conectarBut = QPushButton("Conectar")
         self.conectarBut.setObjectName("boton")
-        self.conectarBut.clicked.connect(self.controlador.conectar_puerto) # establecer comunicasion a un puerto serial
-        gridControles.addWidget(self.conectarBut, 1, 3)
+        self.conectarBut.clicked.connect(self.controlador.conectar_puerto)
+        gridControles.addWidget(self.conectarBut, 0, 3)
 
-        # boton para desconectar un puerto serial
         self.desconectarBut = QPushButton("Desconectar")
         self.desconectarBut.setObjectName("boton")
         self.desconectarBut.clicked.connect(self.controlador.desconectar_puerto)
-        gridControles.addWidget(self.desconectarBut, 1, 4)
+        gridControles.addWidget(self.desconectarBut, 0, 4)
 
-
-
-        # desplegable puesto serial
+        # --- Fila 2 ---
         etPuertoSerial = QLabel("Puerto serial:")
         etPuertoSerial.setObjectName("etiquetaControl")
-        gridControles.addWidget(etPuertoSerial, 2, 0)
+        gridControles.addWidget(etPuertoSerial, 1, 0)
+
         self.puertosSerial = QComboBox()
         self.puertosSerial.setObjectName("desplegable")
-        self.puertosSerial.addItems(self.controlador.listar_puertos()) # le damos los valores segun el controlador
-        gridControles.addWidget(self.puertosSerial, 2, 1)
+        self.puertosSerial.addItems(self.controlador.listar_puertos())
+        gridControles.addWidget(self.puertosSerial, 1, 1)
         
-        # seleccionador de velocidad
         etVelocidad = QLabel("Velocidad:")
         etVelocidad.setObjectName("etiquetaControl")
-        gridControles.addWidget(etVelocidad, 2, 2)
+        gridControles.addWidget(etVelocidad, 1, 2)
+
         self.velocidad = QComboBox()
         self.velocidad.setObjectName("desplegable")
         self.velocidad.addItems(["1200","2400","4800","9600","19200","38400","57600","115200"])
-        gridControles.addWidget(self.velocidad, 2, 3)
+        gridControles.addWidget(self.velocidad, 1, 3)
 
-        # boton para actualizar los puertos
         self.actualizarBut = QPushButton("Actualizar")
         self.actualizarBut.setObjectName("boton")
-        self.actualizarBut.clicked.connect(self.controlador.actualizar_puertos) #actualiza los puertos que hay
-        gridControles.addWidget(self.actualizarBut, 2, 4)
+        self.actualizarBut.clicked.connect(self.controlador.actualizar_puertos)
+        gridControles.addWidget(self.actualizarBut, 1, 4)
 
         
         # Segundo grid: gráficas
@@ -151,5 +160,11 @@ class MonitoreoTiempoReal(QWidget):
             QMessageBox.information(self, titulo, mensaje)
 
     # escoger que se va a modelar
-    def definirModelo3D(self):
-        pass
+    def cambiarModelo3D(self):
+        seleccionModel = self.tipoMision.currentText()
+        if seleccionModel == "CANSAT":
+            self.visual.cambiarModelo3D(rutaAbsoluta("Media/Model3D/CANSAT.stl"))
+            self.visual.setZoomFijo(1300)
+        elif seleccionModel == "AVIONICA":
+            self.visual.cambiarModelo3D(rutaAbsoluta("Media/Model3D/COHETE.stl"))
+            self.visual.setZoomFijo(2000)
