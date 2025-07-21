@@ -49,17 +49,14 @@ class CMonitoreoTiempoReal:
             
             # Asegurarse de que hay suficientes datos antes de acceder a ellos
             if len(datos) >= 3:
-                # Añadir una pequeña variación aleatoria para simular movimiento
-                rotX = int(datos[0])
-                rotY = int(datos[1])
-                rotZ = int(datos[2])
+                rx = datos[0]
+                ry = datos[1]
+                rz = datos[2]
+                tem = datos[3]
 
-                # datos[0], datos[1], datos[2] para la orientación
-                self.vista.visual.actualizarOrientacion(rotX, rotY, rotZ)
-                
-                temperatura = datos[3] #para la temperatura (si existen)
-                if len(datos) > 3:
-                     self.vista.temperatura.agregarDato(temperatura)
+                self.vista.visual.actualizarOrientacion(rx,ry,rz)
+                self.vista.temperatura.agregarDato(tem)
+
             else:
                 print(f"Advertencia: Se recibieron datos incompletos: {linea}")
 
@@ -68,14 +65,17 @@ class CMonitoreoTiempoReal:
         
 
     def iniciar_monitoreo(self): # inicar el escaneo del puerto serial
-        self.serialManager.iniciar_escaneo()
+        if self.serialManager.iniciar_escaneo():
+            self.vista.mostrar_mensaje("Exito", "Se inicio el monitoreo")
+        else:
+            self.vista.mostrar_mensaje("Error", "No se inicio el monitoreo", "warning")
+
     
 
     def detener_monitoreo(self): # detener el ecaneo del puerto serial
         if self.serialManager.detener_escaneo(): 
             self.vista.mostrar_mensaje("Exito", "Se  detuvo el escaneo del puerto")
-            
         else:
-            self.vista.mostrar_mensaje("Error", "No se  detuvo el escaneo del puerto", "warning")
+            self.vista.mostrar_mensaje("Error", "No se detuvo el escaneo del puerto", "warning")
 
     
