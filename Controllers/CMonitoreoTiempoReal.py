@@ -49,10 +49,10 @@ class CMonitoreoTiempoReal:
             
             # Asegurarse de que hay suficientes datos antes de acceder a ellos
             if len(datos) >= 3:
-                rx = datos[0]
-                ry = datos[1]
-                rz = datos[2]
-                tem = datos[3]
+                rx = int(datos[0])
+                ry = int (datos[1])
+                rz = int(datos[2])
+                tem = round(datos[3], 1)
 
                 self.vista.visual.actualizarOrientacion(rx,ry,rz)
                 self.vista.temperatura.agregarDato(tem)
@@ -73,8 +73,11 @@ class CMonitoreoTiempoReal:
     
 
     def detener_monitoreo(self): # detener el ecaneo del puerto serial
-        if self.serialManager.detener_escaneo(): 
-            self.vista.mostrar_mensaje("Exito", "Se  detuvo el escaneo del puerto")
+        if self.serialManager.detener_escaneo() and self.serialManager.desconectar():
+            self.actualizar_puertos()
+            self.vista.temperatura.limpiarVista()
+            self.vista.visual.limpiarVista()
+            self.vista.mostrar_mensaje("Exito", "Se  detuvo el escaneo y se desconecto el puerto")
         else:
             self.vista.mostrar_mensaje("Error", "No se detuvo el escaneo del puerto", "warning")
 

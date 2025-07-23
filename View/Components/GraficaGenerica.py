@@ -11,7 +11,6 @@ class GraficaGenerica(QWidget):
         # Contadores para datos y tiempo
         self.tiempos_ventana = []      # Eje X: tiempo en segundos temporales
         self.datos_ventana = []        # Eje Y: datos temporales
-        self.tiempos_historial = []    # Eje X: tiempo en segundos persistentes
         self.datos_historial = []      # Eje Y: datos persistentes
 
         self.contador_segundos = 0 # Segundos de la grafica
@@ -51,7 +50,7 @@ class GraficaGenerica(QWidget):
         self.setLayout(layout)
 
         # Etiqueta informativa para mostrar el último dato recibido
-        self.info = QLabel("⏳ Iniciando monitoreo...")
+        self.info = QLabel("⏳ Esperando monitoreo...")
         self.info.setObjectName("EstiInfo") # Cambio de nombre al objeto para edicion en QSS
         layout.addWidget(self.info)
 
@@ -63,7 +62,6 @@ class GraficaGenerica(QWidget):
         self.tiempos_ventana.append(self.contador_segundos)
         self.datos_ventana.append(dato)
         # Agregar los datos a la lista persistente
-        self.tiempos_historial.append(self.contador_segundos)
         self.datos_historial.append(dato)
 
         # Validar la cantidad de datos en la ventana de la gráfica
@@ -72,7 +70,7 @@ class GraficaGenerica(QWidget):
             self.datos_ventana.pop(0)
     
         self.actualizarGrafica()
-        self.info.setText(f"📡 Último dato: {dato:.2f} {self.notacion}")
+        self.info.setText(f"📡 Último dato: {dato} {self.notacion}")
 
     # Método para actualizar la gráfica
     def actualizarGrafica(self):
@@ -83,7 +81,7 @@ class GraficaGenerica(QWidget):
         for indice_punto, (x, y) in enumerate(zip(self.tiempos_ventana, self.datos_ventana)):
             if indice_punto < len(self.etiquetas_valores):
                 self.etiquetas_valores[indice_punto].set_position((x, y))
-                self.etiquetas_valores[indice_punto].set_text(f"{y:.2f}")
+                self.etiquetas_valores[indice_punto].set_text(f"{y}")
                 self.etiquetas_valores[indice_punto].set_visible(True)
         # Ocultar las etiquetas restantes si hay menos de 15 puntos
         for indice_punto in range(len(self.tiempos_ventana), len(self.etiquetas_valores)):
@@ -104,9 +102,14 @@ class GraficaGenerica(QWidget):
         # 5. Redibujar solo el canvas
         self.canvas.draw()
 
+    #limpiar datos en ventana
+    def limpiarVista(self):
+        self.datos_historial.clear()
+        self.datos_ventana.clear()
+        self.tiempos_ventana.clear()
+        self.actualizarGrafica()
+        self.info.setText("⏳ Esperando monitoreo...")
+
     # Métodos get para las listas
-    def getTiempos(self): 
-        return self.tiempos_historial
-    
     def getDatos(self):
         return self.datos_historial

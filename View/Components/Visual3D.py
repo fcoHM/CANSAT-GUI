@@ -84,7 +84,7 @@ class Visual3D(QWidget):
             if self.actor.GetOrientation() != (x, y, z): # Compara la orientacion con la anteror de que no sea igual
                 self.actor.SetOrientation(x, y, z)
                 self.vtk_widget.GetRenderWindow().Render()
-        self.infoModel.setText(f"X: {x:.2f}  Y: {y:.2f}  Z: {z:.2f}   ")
+        self.infoModel.setText(f"X: {x}  Y: {y}  Z: {z}   ")
         self.x_hist.append(x)
         self.y_hist.append(y)
         self.z_hist.append(z)
@@ -104,4 +104,16 @@ class Visual3D(QWidget):
             self.rutaSTL = nueva_ruta_stl
             self.cargarSTL(self.rutaSTL)
 
-    
+    def limpiarVista(self):
+        # limpia los historiales de datos
+        self.x_hist.clear()
+        self.y_hist.clear()
+        self.z_hist.clear()
+
+        # restablece la etiqueta de información
+        self.infoModel.setText("X: -00.00   Y: -00.00   Z: -00.00  ")
+
+        # restablece la orientación del modelo 3D a su estado inicial (0, 0, 0)
+        if self.actor:
+            self.actor.SetOrientation(0, 0, 0)
+            self.vtk_widget.GetRenderWindow().Render()
