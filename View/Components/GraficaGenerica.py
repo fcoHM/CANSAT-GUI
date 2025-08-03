@@ -107,6 +107,7 @@ class GraficaGenerica(QWidget):
         self.datos_historial.clear()
         self.datos_ventana.clear()
         self.tiempos_ventana.clear()
+        self.contador_segundos =0
         self.actualizarGrafica()
         self.info.setText("⏳ Esperando monitoreo...")
 

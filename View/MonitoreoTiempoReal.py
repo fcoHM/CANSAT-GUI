@@ -2,6 +2,7 @@ from PySide6.QtWidgets import ( QWidget, QHBoxLayout, QVBoxLayout, QGridLayout, 
                                QComboBox, QLineEdit)
 from View.Components.Visual3D import Visual3D
 from View.Components.GraficaGenerica import GraficaGenerica
+from View.Components.GraficaMaximo import GraficaMaximo
 from PySide6.QtWidgets import QMessageBox  
 
 from Tools.Paths import rutaAbsoluta
@@ -97,9 +98,11 @@ class MonitoreoTiempoReal(QWidget):
         # Segundo grid: gráficas
         gridGrafica = QGridLayout()
         self.temperatura = GraficaGenerica("Temperatura", "Tiempo (s)","Temperatura (°C)", "°C", "#FF5733")
+        self.altura = GraficaMaximo("Altura", "Tiempo (s)", "Altura (m)", "m", "#FFFF33")
+
         self.humedad = GraficaGenerica("Humedad", "Tiempo (s)", "Humedad (%)", "%", "#33A7FF")
         self.presion = GraficaGenerica("Presión", "Tiempo (s)", "Presión (Pa)", "Pa", "#33FF57")
-        self.altura = GraficaGenerica("Altura", "Tiempo (s)", "Altura (m)", "m", "#FFFF33")
+        
         self.co2 = GraficaGenerica("CO₂", "Tiempo (s)", "Concentración (ppm)", "ppm", "#FFFFFF")
         self.uv = GraficaGenerica("Radiación UV", "Tiempo (s)", "Índice UV", "UV", "#33FFFF")
 
