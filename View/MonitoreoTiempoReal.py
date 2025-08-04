@@ -133,9 +133,18 @@ class MonitoreoTiempoReal(QWidget):
         ladoDer.addLayout(gridGrafica)
         ladoDer.addLayout(botonesLayout)
 
+        # Envolver los layouts en QWidgets para poder aplicarles estilos
+        ladoIzqWidget = QWidget()
+        ladoIzqWidget.setLayout(ladoIzq)
+        ladoIzqWidget.setObjectName("ladoWidget")
+
+        ladoDerWidget = QWidget()
+        ladoDerWidget.setLayout(ladoDer)
+        ladoDerWidget.setObjectName("ladoWidget")
+
         #agregar las disposiciones a la ventana principal del objeto
-        ContenidoPrincipal.addLayout(ladoIzq) # agregar el lado izq 
-        ContenidoPrincipal.addLayout(ladoDer) # agregar el lado der (ahora vertical con grids)
+        ContenidoPrincipal.addWidget(ladoIzqWidget) # agregar el lado izq
+        ContenidoPrincipal.addWidget(ladoDerWidget) # agregar el lado der
         ContenidoPrincipal.setStretch(0, 2)  # ladoIzq (20%)
         ContenidoPrincipal.setStretch(1, 8)  # ladoDer (80%)
         self.setLayout(ContenidoPrincipal) # definir lo que tiene el componente principal
@@ -171,3 +180,7 @@ class MonitoreoTiempoReal(QWidget):
         elif seleccionModel == "AVIONICA":
             self.visual.cambiarModelo3D(rutaAbsoluta("Media/Model3D/COHETE.stl"))
             self.visual.setZoomFijo(2000)
+
+    # agregar nueva informacion
+    def actualizarInformacion(self,):
+        pass

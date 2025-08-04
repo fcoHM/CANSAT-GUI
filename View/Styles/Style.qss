@@ -100,12 +100,44 @@
 }
 
 QMessageBox { /* mensajes flotantes */
-    background-color: #2b2b2b;
+    background-color: rgba(43, 43, 43, 0.3);
     color: #ffffff;
     font-size: 14px;
+    border: 1px solid #555;
     border-radius: 10px;
+}
+
+QMessageBox QLabel {
+    background-color: transparent;
+    color: #ffffff;
+    font-size: 16px;
+    padding: 10px;
+}
+
+QMessageBox QPushButton {
+    background-color: #00bcd4;
+    color: #ffffff;
+    border: 1px solid #555;
+    border-radius: 6px;
+    padding: 8px;
+    font-size: 14px;
+    min-width: 80px;
+}
+
+QMessageBox QPushButton:hover {
+    background-color: #2b2b2b;
+    border: 1px solid #FFFFFF;
 }
 
 * {/*funte para toda la interface */
     font-family: 'Montserrat', sans-serif;
+}
+
+QWidget{/* fondo de todas las ventanas */
+    background-color: #1b212e;
+}
+
+#ladoWidget{
+    border: 2px solid #1d656e;
+    border-radius: 10px;
 }
