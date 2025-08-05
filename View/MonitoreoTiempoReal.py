@@ -102,8 +102,13 @@ class MonitoreoTiempoReal(QWidget):
         scroll = QScrollArea()
         scroll.setWidgetResizable(True)
 
-        graficas_widget = QWidget()
-        gridGrafica = QGridLayout(graficas_widget)
+        contenidoScroll = QWidget() # este es el que se la manda al scroll al final para representar en pantalla
+        layoutContenido = QHBoxLayout(contenidoScroll)
+
+
+        # graficas 
+        graficasWidget = QWidget()
+        gridGrafica = QGridLayout(graficasWidget)
         
         self.temperatura = GraficaGenerica("Temperatura", "Tiempo (s)","Temperatura (°C)", "°C", "#FF5733")
         self.altura = GraficaMaximo("Altura", "Tiempo (s)", "Altura (m)", "m", "#FFFF33")
@@ -131,10 +136,23 @@ class MonitoreoTiempoReal(QWidget):
         gridGrafica.addWidget(self.latitud,     1, 3)
         gridGrafica.addWidget(self.longitud,    1, 4)
 
-        scroll.setWidget(graficas_widget)
+
+        # GPS 
+        gpsWidget = QWidget()
+        layoutGps = QVBoxLayout(gpsWidget)
+
+        self.pres= QLabel("Aqui va ir el objeto del GPS y sus mapas ")
+        layoutGps.addWidget(self.pres)
+
+        # Agregar componentes al scroll
+        layoutContenido.addWidget(graficasWidget)
+        layoutContenido.addWidget(gpsWidget)
+
+        
 
 
-        # GPS
+
+        scroll.setWidget(contenidoScroll) # meter el contenido al scroll
 
 
         # ------------------------ Layout para botones ------------------------------------------------
