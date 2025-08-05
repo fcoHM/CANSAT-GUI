@@ -1,5 +1,5 @@
 from PySide6.QtWidgets import ( QWidget, QHBoxLayout, QVBoxLayout, QGridLayout, QLabel, QPushButton, 
-                               QComboBox, QLineEdit)
+                               QComboBox, QLineEdit, QScrollArea)
 from View.Components.Visual3D import Visual3D
 from View.Components.GraficaGenerica import GraficaGenerica
 from View.Components.GraficaMaximo import GraficaMaximo
@@ -11,6 +11,7 @@ from Tools.Paths import rutaAbsoluta
 class MonitoreoTiempoReal(QWidget):
     def __init__(self, controlador):
         super().__init__() # se manda a llamar el constructor la clase Qwidget 
+        self.setMinimumSize(1400,650)
         #ajustes de la ventana
         ContenidoPrincipal = QHBoxLayout() # contenedor horizontal que lleva todo el contenido
         ladoIzq = QVBoxLayout() # contenedor vertical para el modelos 3d 
@@ -95,8 +96,15 @@ class MonitoreoTiempoReal(QWidget):
         gridControles.addWidget(self.actualizarBut, 1, 4)
 
         
-        # Segundo grid: gráficas
-        gridGrafica = QGridLayout()
+
+        # -------------------- Scroll para la vista de las graficas y GPS ----------------------
+
+        scroll = QScrollArea()
+        scroll.setWidgetResizable(True)
+
+        graficas_widget = QWidget()
+        gridGrafica = QGridLayout(graficas_widget)
+        
         self.temperatura = GraficaGenerica("Temperatura", "Tiempo (s)","Temperatura (°C)", "°C", "#FF5733")
         self.altura = GraficaMaximo("Altura", "Tiempo (s)", "Altura (m)", "m", "#FFFF33")
 
@@ -105,16 +113,31 @@ class MonitoreoTiempoReal(QWidget):
         
         self.co2 = GraficaGenerica("CO₂", "Tiempo (s)", "Concentración (ppm)", "ppm", "#FFFFFF")
         self.uv = GraficaGenerica("Radiación UV", "Tiempo (s)", "Índice UV", "UV", "#33FFFF")
+        self.aceleracion = GraficaGenerica("Aceleración", "Tiempo (s)", "Aceleración (m/s²)", "m/s²", "#FFC300")
+        self.velocidad_g = GraficaGenerica("Velocidad", "Tiempo (s)", "Velocidad (m/s)", "m/s", "#C70039")
+        self.latitud = GraficaGenerica("Latitud", "Tiempo (s)", "Latitud (°)", "°", "#900C3F")
+        self.longitud = GraficaGenerica("Longitud", "Tiempo (s)", "Longitud (°)", "°", "#581845")
 
-        # Agregarlas en 2 filas y 3 columnas
+        # Agregarlas en 2 filas y 5 columnas
         gridGrafica.addWidget(self.temperatura, 0, 0)
         gridGrafica.addWidget(self.humedad,     0, 1)
         gridGrafica.addWidget(self.presion,     0, 2)
-        gridGrafica.addWidget(self.altura,      1, 0)
-        gridGrafica.addWidget(self.co2,         1, 1)
-        gridGrafica.addWidget(self.uv,          1, 2)
+        gridGrafica.addWidget(self.co2,         0, 3)
+        gridGrafica.addWidget(self.uv,          0, 4)
 
-        # Layout para botones
+        gridGrafica.addWidget(self.altura,      1, 0)
+        gridGrafica.addWidget(self.aceleracion, 1, 1)
+        gridGrafica.addWidget(self.velocidad_g, 1, 2)
+        gridGrafica.addWidget(self.latitud,     1, 3)
+        gridGrafica.addWidget(self.longitud,    1, 4)
+
+        scroll.setWidget(graficas_widget)
+
+
+        # GPS
+
+
+        # ------------------------ Layout para botones ------------------------------------------------
         botonesLayout = QHBoxLayout()
         self.iniciarBut = QPushButton("Iniciar")
         self.iniciarBut.clicked.connect(self.controlador.iniciar_monitoreo)
@@ -130,7 +153,7 @@ class MonitoreoTiempoReal(QWidget):
 
         # Agregar los grids al lado derecho (vertical)
         ladoDer.addLayout(gridControles)
-        ladoDer.addLayout(gridGrafica)
+        ladoDer.addWidget(scroll)
         ladoDer.addLayout(botonesLayout)
 
         # Envolver los layouts en QWidgets para poder aplicarles estilos
