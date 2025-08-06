@@ -3,6 +3,7 @@ from PySide6.QtWidgets import ( QWidget, QHBoxLayout, QVBoxLayout, QGridLayout, 
 from View.Components.Visual3D import Visual3D
 from View.Components.GraficaGenerica import GraficaGenerica
 from View.Components.GraficaMaximo import GraficaMaximo
+from View.Components.Mapas.LocalizacionGPS import LocalizacionGPS
 from PySide6.QtWidgets import QMessageBox  
 
 from Tools.Paths import rutaAbsoluta
@@ -141,8 +142,8 @@ class MonitoreoTiempoReal(QWidget):
         gpsWidget = QWidget()
         layoutGps = QVBoxLayout(gpsWidget)
 
-        self.pres= QLabel("Aqui va ir el objeto del GPS y sus mapas ")
-        layoutGps.addWidget(self.pres)
+        self.gps = LocalizacionGPS()
+        layoutGps.addWidget(self.gps)
 
         # Agregar componentes al scroll
         layoutContenido.addWidget(graficasWidget)
