@@ -1,5 +1,6 @@
-from PySide6.QtWidgets import(QWidget,QVBoxLayout, QHBoxLayout, QLabel)
-from PySide6.QtCore import(QUrl,Slot)
+from PySide6.QtWidgets import(QWidget,QVBoxLayout, QHBoxLayout,
+                               QLabel, QPushButton)
+from PySide6.QtCore import QUrl
 from Tools.GPS import GPS
 from PySide6.QtQuickWidgets import QQuickWidget
 from Tools.Paths import rutaAbsoluta
@@ -8,14 +9,15 @@ class LocalizacionGPS(QWidget):
     def __init__(self):
         super().__init__()
 
-        self.setMinimumSize(900,600) # tamanio minimo del gps
+        self.setMinimumSize(900,400) # tamanio minimo del gps
         # Layout principal
-        main_layout = QVBoxLayout(self)
+        contenido = QVBoxLayout(self)
 
         # Vista del mapa
         self.mapa = QQuickWidget()
         self.mapa.setResizeMode(QQuickWidget.SizeRootObjectToView)
-        main_layout.addWidget(self.mapa)
+        contenido.addWidget(self.mapa) # se agrega el mapa
+
 
         # Adjuntamos la clase de gps
         self.gps = GPS()
@@ -26,7 +28,27 @@ class LocalizacionGPS(QWidget):
         qml_url = QUrl.fromLocalFile(rutaMapa)
         self.mapa.setSource(qml_url)
 
+        # layout de control
+        self.controlLayout = QHBoxLayout() # etiqueta de monitoreo
+        self.etiCordenadas = QLabel(f"Lon: -000:00000000  Lat: -000:00000000")
+        self.etiCordenadas.setObjectName("EstiInfo")
+
+        self.zoomMas = QPushButton("+") # aumentar zoom
+        self.zoomMas.clicked.connect(self.gps.masZoom)
+        self.zoomMas.setObjectName("botonControl")
+
+        self.zoomMenos = QPushButton("-") # disminuir zoom
+        self.zoomMenos.clicked.connect(self.gps.menosZoom)
+        self.zoomMenos.setObjectName("botonControl")
+        
+        self.controlLayout.addWidget(self.etiCordenadas)
+        self.controlLayout.addWidget(self.zoomMenos)
+        self.controlLayout.addWidget(self.zoomMas)
+
+        contenido.addLayout(self.controlLayout) # se agrega el panel de control al contenido
+
     def cambiarCordenadas(self, lon, lat):
+        self.etiCordenadas.text(f"Lon: {lon}, Lat: {lat}")
         self.gps.actualizarCordenadas(lon, lat)
 
     

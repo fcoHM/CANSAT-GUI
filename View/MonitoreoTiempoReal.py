@@ -101,6 +101,7 @@ class MonitoreoTiempoReal(QWidget):
         # -------------------- Scroll para la vista de las graficas y GPS ----------------------
 
         scroll = QScrollArea()
+        scroll.setObjectName("scroll")
         scroll.setWidgetResizable(True)
 
         contenidoScroll = QWidget() # este es el que se la manda al scroll al final para representar en pantalla
@@ -178,11 +179,11 @@ class MonitoreoTiempoReal(QWidget):
         # Envolver los layouts en QWidgets para poder aplicarles estilos
         ladoIzqWidget = QWidget()
         ladoIzqWidget.setLayout(ladoIzq)
-        ladoIzqWidget.setObjectName("ladoWidget")
+        ladoIzqWidget.setObjectName("MarcoWidget")
 
         ladoDerWidget = QWidget()
         ladoDerWidget.setLayout(ladoDer)
-        ladoDerWidget.setObjectName("ladoWidget")
+        ladoDerWidget.setObjectName("MarcoWidget")
 
         #agregar las disposiciones a la ventana principal del objeto
         ContenidoPrincipal.addWidget(ladoIzqWidget) # agregar el lado izq
