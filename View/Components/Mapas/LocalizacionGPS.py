@@ -1,7 +1,7 @@
 from PySide6.QtWidgets import(QWidget,QVBoxLayout, QHBoxLayout,
                                QLabel, QPushButton)
 from PySide6.QtCore import QUrl
-from Tools.GPS import GPS
+from View.Components.Mapas.GPS import GPS
 from PySide6.QtQuickWidgets import QQuickWidget
 from Tools.Paths import rutaAbsoluta
 
