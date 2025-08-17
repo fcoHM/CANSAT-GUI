@@ -102,6 +102,7 @@ class MonitoreoTiempoReal(QWidget):
 
         scroll = QScrollArea()
         scroll.setObjectName("scroll")
+
         scroll.setWidgetResizable(True)
 
         contenidoScroll = QWidget() # este es el que se la manda al scroll al final para representar en pantalla
@@ -118,25 +119,16 @@ class MonitoreoTiempoReal(QWidget):
         self.humedad = GraficaGenerica("Humedad", "Tiempo (s)", "Humedad (%)", "%", "#33A7FF")
         self.presion = GraficaGenerica("Presión", "Tiempo (s)", "Presión (Pa)", "Pa", "#33FF57")
         
-        self.co2 = GraficaGenerica("CO₂", "Tiempo (s)", "Concentración (ppm)", "ppm", "#FFFFFF")
-        self.uv = GraficaGenerica("Radiación UV", "Tiempo (s)", "Índice UV", "UV", "#33FFFF")
-        self.aceleracion = GraficaGenerica("Aceleración", "Tiempo (s)", "Aceleración (m/s²)", "m/s²", "#FFC300")
-        self.velocidad_g = GraficaGenerica("Velocidad", "Tiempo (s)", "Velocidad (m/s)", "m/s", "#C70039")
-        self.latitud = GraficaGenerica("Latitud", "Tiempo (s)", "Latitud (°)", "°", "#900C3F")
-        self.longitud = GraficaGenerica("Longitud", "Tiempo (s)", "Longitud (°)", "°", "#581845")
+        self.calAire = GraficaGenerica("Calidad Aire", "Tiempo (s)", "Concentración (ppm)", "ppm", "#FFFFFF")
 
+        
         # Agregarlas en 2 filas y 5 columnas
         gridGrafica.addWidget(self.temperatura, 0, 0)
         gridGrafica.addWidget(self.humedad,     0, 1)
         gridGrafica.addWidget(self.presion,     0, 2)
-        gridGrafica.addWidget(self.co2,         0, 3)
-        gridGrafica.addWidget(self.uv,          0, 4)
-
-        gridGrafica.addWidget(self.altura,      1, 0)
-        gridGrafica.addWidget(self.aceleracion, 1, 1)
-        gridGrafica.addWidget(self.velocidad_g, 1, 2)
-        gridGrafica.addWidget(self.latitud,     1, 3)
-        gridGrafica.addWidget(self.longitud,    1, 4)
+        gridGrafica.addWidget(self.calAire,      1, 0)
+        gridGrafica.addWidget(self.altura,      1, 1)
+        
 
 
         # GPS 
@@ -225,5 +217,11 @@ class MonitoreoTiempoReal(QWidget):
             self.visual.setZoomFijo(2000)
 
     # agregar nueva informacion
-    def actualizarInformacion(self,):
-        pass
+    def actualizarInformacion(self,gx,gy,gz,tem, hum,press, cal, alt, lon, lat):
+        self.visual.actualizarOrientacion(gx,gy,gz)
+        self.temperatura.agregarDato(tem)
+        self.humedad.agregarDato(hum)
+        self.presion.agregarDato(press)
+        self.altura.agregarDato(alt)
+        self.calAire.agregarDato(cal)
+        self.gps.cambiarCordenadas(lon, lat)

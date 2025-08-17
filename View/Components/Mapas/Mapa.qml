@@ -45,7 +45,6 @@ Item {
         Connections {
             // 'target: gps' le dice que escuche al objeto "gps" que expusimos desde Python.
             target: gps
-            
             // Esta función se ejecuta AUTOMÁTICAMENTE cada vez que el objeto 'gps' en Python
             // El nombre de la función debe ser 'on' + el nombre de la señal (en formato camelCase).
             function onCoordenadas_actualizadas(lat, lon) {

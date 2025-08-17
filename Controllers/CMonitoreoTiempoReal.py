@@ -1,7 +1,6 @@
 # logica de ventana monitoreo en tiempo real
 from Tools.SerialManager import SerialManager
 from PySide6.QtCore import Slot
-import random
 
 class CMonitoreoTiempoReal:
 
@@ -9,7 +8,7 @@ class CMonitoreoTiempoReal:
         self.serialManager = SerialManager() # herramienta para el manejo de puertos seriales
         self.vista = None
         # Conectar la señal de datos recibidos al slot de actualización
-        self.serialManager.linea_recibida.connect(self.actualizar_grafica)
+        self.serialManager.linea_recibida.connect(self.actualizar_graficos)
 
     
     def actualizar_puertos(self): # actualizar los puertos, mandando una nueva lista
@@ -39,23 +38,39 @@ class CMonitoreoTiempoReal:
             self.vista.mostrar_mensaje("Error", "No se cerró la comunicación con el puerto.", "warning")
 
     @Slot(str)
-    def actualizar_grafica(self, linea=""):# procesamiento de la cadena de texto
+    def actualizar_graficos(self, linea=""):# procesamiento de la cadena de texto
         if not linea:
             return  # si la línea está vacía, no hacer nada
 
         try:
-            # suponiendo que los datos son: rotX, rotY, rotZ, temp, ...
+            # ACCX,ACCY,ACCZ,GYRX,GYRY,GYRZ,TEMP,HUM,PRESS,ALT,GAS,LAT,LON
             datos = [float(valor) for valor in linea.split(",")]
             
             # Asegurarse de que hay suficientes datos antes de acceder a ellos
-            if len(datos) >= 3:
-                rx = int(datos[0])
-                ry = int (datos[1])
-                rz = int(datos[2])
-                tem = round(datos[3], 1)
+            if len(datos) >= 13:
+                # Acelerometro (no se usan en la GUI, pero se leen)
+                # acrx = datos[0]
+                # acry = datos[1]
+                # acrz = datos[2]
 
-                self.vista.visual.actualizarOrientacion(rx,ry,rz)
-                self.vista.temperatura.agregarDato(tem)
+                # Datos del giroscopio para el visualizador 3D
+                gx = datos[3]
+                gy = datos[4]
+                gz = datos[5]
+
+                # Datos de los sensores para las gráficas
+                tem = datos[6]
+                humedad = datos[7]
+                press = datos[8]
+                alt = datos[9]
+                calAire = datos[10]
+                
+                # Datos del GPS
+                lat = datos[11]
+                lon = datos[12]
+
+                # Se envian los datos a la vista para ser actualizados
+                self.vista.actualizarInformacion(gx, gy, gz, tem, humedad, press, alt, calAire, lon, lat)
 
             else:
                 print(f"Advertencia: Se recibieron datos incompletos: {linea}")
