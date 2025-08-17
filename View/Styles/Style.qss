@@ -137,7 +137,55 @@ QWidget{/* fondo de todas las ventanas */
     background-color: #1b212e;
 }
 
-#ladoWidget{
+#MarcoWidget{ /*marco del widgets */
     border: 2px solid #1d656e;
     border-radius: 10px;
+}
+
+#scroll { /* estilo del scroll */
+    background-color: #1b212e;
+    border: 2px solid #1d656e;
+    border-radius: 10px;
+}
+
+#scroll QScrollBar:vertical {
+    border: none;
+    background: #141924;
+    width: 12px;
+    margin: 0px 0px 0px 0px;
+}
+
+#scroll QScrollBar::handle:vertical {
+    background: #00bcd4;
+    min-height: 20px;
+    border-radius: 6px;
+}
+
+#scroll QScrollBar::add-line:vertical, #scroll QScrollBar::sub-line:vertical {
+    height: 0px;
+}
+
+#scroll QScrollBar::add-page:vertical, #scroll QScrollBar::sub-page:vertical {
+    background: none;
+}
+
+#scroll QScrollBar:horizontal {
+    border: none;
+    background: #141924;
+    height: 12px;
+    margin: 0px 0px 0px 0px;
+}
+
+#scroll QScrollBar::handle:horizontal {
+    background: #00bcd4;
+    min-width: 20px;
+    border-radius: 6px;
+}
+
+#scroll QScrollBar::add-line:horizontal, #scroll QScrollBar::sub-line:horizontal {
+    width: 0px;
+}
+
+#scroll QScrollBar::add-page:horizontal, #scroll QScrollBar::sub-page:horizontal {
+    background: none;
 }

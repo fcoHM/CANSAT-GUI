@@ -1,8 +1,9 @@
 from PySide6.QtWidgets import ( QWidget, QHBoxLayout, QVBoxLayout, QGridLayout, QLabel, QPushButton, 
-                               QComboBox, QLineEdit)
+                               QComboBox, QLineEdit, QScrollArea)
 from View.Components.Visual3D import Visual3D
 from View.Components.GraficaGenerica import GraficaGenerica
 from View.Components.GraficaMaximo import GraficaMaximo
+from View.Components.Mapas.LocalizacionGPS import LocalizacionGPS
 from PySide6.QtWidgets import QMessageBox  
 
 from Tools.Paths import rutaAbsoluta
@@ -11,6 +12,7 @@ from Tools.Paths import rutaAbsoluta
 class MonitoreoTiempoReal(QWidget):
     def __init__(self, controlador):
         super().__init__() # se manda a llamar el constructor la clase Qwidget 
+        self.setMinimumSize(1400,650)
         #ajustes de la ventana
         ContenidoPrincipal = QHBoxLayout() # contenedor horizontal que lleva todo el contenido
         ladoIzq = QVBoxLayout() # contenedor vertical para el modelos 3d 
@@ -95,26 +97,59 @@ class MonitoreoTiempoReal(QWidget):
         gridControles.addWidget(self.actualizarBut, 1, 4)
 
         
-        # Segundo grid: gráficas
-        gridGrafica = QGridLayout()
+
+        # -------------------- Scroll para la vista de las graficas y GPS ----------------------
+
+        scroll = QScrollArea()
+        scroll.setObjectName("scroll")
+
+        scroll.setWidgetResizable(True)
+
+        contenidoScroll = QWidget() # este es el que se la manda al scroll al final para representar en pantalla
+        layoutContenido = QHBoxLayout(contenidoScroll)
+
+
+        # graficas 
+        graficasWidget = QWidget()
+        gridGrafica = QGridLayout(graficasWidget)
+        
         self.temperatura = GraficaGenerica("Temperatura", "Tiempo (s)","Temperatura (°C)", "°C", "#FF5733")
         self.altura = GraficaMaximo("Altura", "Tiempo (s)", "Altura (m)", "m", "#FFFF33")
 
         self.humedad = GraficaGenerica("Humedad", "Tiempo (s)", "Humedad (%)", "%", "#33A7FF")
         self.presion = GraficaGenerica("Presión", "Tiempo (s)", "Presión (Pa)", "Pa", "#33FF57")
         
-        self.co2 = GraficaGenerica("CO₂", "Tiempo (s)", "Concentración (ppm)", "ppm", "#FFFFFF")
-        self.uv = GraficaGenerica("Radiación UV", "Tiempo (s)", "Índice UV", "UV", "#33FFFF")
+        self.calAire = GraficaGenerica("Calidad Aire", "Tiempo (s)", "Concentración (ppm)", "ppm", "#FFFFFF")
 
-        # Agregarlas en 2 filas y 3 columnas
+        
+        # Agregarlas en 2 filas y 5 columnas
         gridGrafica.addWidget(self.temperatura, 0, 0)
         gridGrafica.addWidget(self.humedad,     0, 1)
         gridGrafica.addWidget(self.presion,     0, 2)
-        gridGrafica.addWidget(self.altura,      1, 0)
-        gridGrafica.addWidget(self.co2,         1, 1)
-        gridGrafica.addWidget(self.uv,          1, 2)
+        gridGrafica.addWidget(self.calAire,      1, 0)
+        gridGrafica.addWidget(self.altura,      1, 1)
+        
 
-        # Layout para botones
+
+        # GPS 
+        gpsWidget = QWidget()
+        layoutGps = QVBoxLayout(gpsWidget)
+
+        self.gps = LocalizacionGPS()
+        layoutGps.addWidget(self.gps)
+
+        # Agregar componentes al scroll
+        layoutContenido.addWidget(graficasWidget)
+        layoutContenido.addWidget(gpsWidget)
+
+        
+
+
+
+        scroll.setWidget(contenidoScroll) # meter el contenido al scroll
+
+
+        # ------------------------ Layout para botones ------------------------------------------------
         botonesLayout = QHBoxLayout()
         self.iniciarBut = QPushButton("Iniciar")
         self.iniciarBut.clicked.connect(self.controlador.iniciar_monitoreo)
@@ -130,17 +165,17 @@ class MonitoreoTiempoReal(QWidget):
 
         # Agregar los grids al lado derecho (vertical)
         ladoDer.addLayout(gridControles)
-        ladoDer.addLayout(gridGrafica)
+        ladoDer.addWidget(scroll)
         ladoDer.addLayout(botonesLayout)
 
         # Envolver los layouts en QWidgets para poder aplicarles estilos
         ladoIzqWidget = QWidget()
         ladoIzqWidget.setLayout(ladoIzq)
-        ladoIzqWidget.setObjectName("ladoWidget")
+        ladoIzqWidget.setObjectName("MarcoWidget")
 
         ladoDerWidget = QWidget()
         ladoDerWidget.setLayout(ladoDer)
-        ladoDerWidget.setObjectName("ladoWidget")
+        ladoDerWidget.setObjectName("MarcoWidget")
 
         #agregar las disposiciones a la ventana principal del objeto
         ContenidoPrincipal.addWidget(ladoIzqWidget) # agregar el lado izq
@@ -182,5 +217,11 @@ class MonitoreoTiempoReal(QWidget):
             self.visual.setZoomFijo(2000)
 
     # agregar nueva informacion
-    def actualizarInformacion(self,):
-        pass
+    def actualizarInformacion(self,gx,gy,gz,tem, hum,press, cal, alt, lon, lat):
+        self.visual.actualizarOrientacion(gx,gy,gz)
+        self.temperatura.agregarDato(tem)
+        self.humedad.agregarDato(hum)
+        self.presion.agregarDato(press)
+        self.altura.agregarDato(alt)
+        self.calAire.agregarDato(cal)
+        self.gps.cambiarCordenadas(lon, lat)
